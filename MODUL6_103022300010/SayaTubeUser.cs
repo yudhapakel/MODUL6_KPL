@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,18 @@ namespace MODUL6_103022300010
         private string username;
         private List<SayaTubeVideo> uploadedVideo;
 
-        public SayaTubeUser(string username)
+        public SayaTubeUser(String username)
         {
-            if (string.IsNullOrEmpty(username) || username.Length > 100) 
+            Debug.Assert(!String.IsNullOrEmpty(username) || username.Length > 100);
             {
-                throw new ArgumentException("Username Tidak boleh kosong atau melebihi 100 karakter");
+
+                //throw new ArgumentException("Username Tidak boleh kosong atau melebihi 100 karakter");
                 Random rand = new Random();
                 this.id = rand.Next(10000, 99999);
                 this.username = username;
                 this.uploadedVideo = new List<SayaTubeVideo>();
             }
+            
         }
 
         public void AddVideo(SayaTubeVideo video)
@@ -43,13 +46,13 @@ namespace MODUL6_103022300010
             return total;
         }
 
-        public void PrintAllVideoDetails()
+        public void PrintAllVideoPlayCount()
         {
             Console.WriteLine($"User : {username}");
             int count = 1;
-            foreach ( var video in uploadedVideo)
+            for (int i = 0; i < Math.Min(uploadedVideo.Count, 8); i++)
             {
-                Console.WriteLine($"Video: {count} judul: {video.GetTItle}");
+                Console.WriteLine($"Video: {count} judul: {uploadedVideo[i].GetTItle()}");
                 count++;
             }
         }

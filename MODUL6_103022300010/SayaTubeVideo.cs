@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
 public class SayaTubeVideo
@@ -9,9 +10,9 @@ public class SayaTubeVideo
 
     public SayaTubeVideo(String title)
     {
-        if (String.IsNullOrEmpty(title) || title.Length > 100)
+        Debug.Assert(!String.IsNullOrEmpty(title) || title.Length > 100);
         {
-            throw new ArgumentNullException("judul video tidak boleh kosong dan lebih dari 100 karakter");
+            //throw new ArgumentNullException("judul video tidak boleh kosong dan lebih dari 100 karakter");
 
             Random rand = new Random();
             this.id = rand.Next(10000, 99999);
@@ -27,12 +28,22 @@ public class SayaTubeVideo
         {
             throw new ArgumentOutOfRangeException("jumlah pemutaran harus diantara 0 sampai 1000000");
 
-            this.playCount += count;
+            try
+            {
+                checked
+                {
+                    this.playCount += count;
+                }
+            }
+            catch (OverflowException) 
+            {
+                Console.WriteLine("Eror: penambahan play melibihi batas dari integer");
+            }
 
         }
     }
 
-    public void PrintALLVideoDetail ()
+    public void PrintALLVideoDetail()
     {
         Console.WriteLine($"ID video: {id}");
         Console.WriteLine($"Judul video: {title}");
